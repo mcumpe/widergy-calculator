@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "android"
+		},
+		{
+			"path": "ios"
+		},
+		{
+			"path": "node_modules"
+		},
+		{
+			"path": "__tests__"
+		}
+	]
+}
