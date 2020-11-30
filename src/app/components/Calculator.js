@@ -82,6 +82,7 @@ const validation = (string) => {
     switch (e) {
       case "DEL":
         setExpression ({expression:""})
+        setResult("")
         break;
       
       case "C":
@@ -135,7 +136,7 @@ const validation = (string) => {
           data={numeros}
           renderItem={({item,index}) => (
          
-                <View style={styles.test}>
+                <View style={styles.keypadStyles}>
                   <TouchableOpacity onPress={() => viewButton(item)}>
                     <Text style={styles.btnText}>{item}</Text>
                   </TouchableOpacity>
@@ -158,24 +159,14 @@ const styles = StyleSheet.create({
     container:{
       flex:1
     },
-    test:{
+    keypadStyles:{
        flex:1, 
        alignItems:'center',
        padding:15,
     },
-    row:{
-      justifyContent:'center',
-      alignContent:'center'
-    },
     result:{
       flex:2,
       backgroundColor:'#EAECEE',
-    },
-    barraIzq:{
-      flex:1,
-      alignItems:'center',
-      alignSelf:'stretch',
-      justifyContent:'center'
     },
     calculation:{
       flex:2,
@@ -193,13 +184,6 @@ const styles = StyleSheet.create({
       backgroundColor:'#EAECEE',
       justifyContent:'center'
     },
-    
-    top:{
-      borderWidth: 5,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-    },
-
     operations:{
       flex:0.8,
       backgroundColor:'black',
@@ -223,9 +207,6 @@ const styles = StyleSheet.create({
       fontSize:20,
       color:'white'
     },
-   /*  white:{
-      color:'white'
-    }, */
     numEx:{
       fontSize:30,
     }
