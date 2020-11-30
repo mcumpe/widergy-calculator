@@ -11,16 +11,10 @@ import {
   Button,
   FlatList,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 
 const Calculator = () => {
@@ -52,20 +46,18 @@ let operation = []
   
   const viewButton = (e) => {
     let resultExpression 
-    let stringFinal
-    
-    stringFinal = validation(expression.expression) 
-
-    console.log("Mi stringFinal es --> ",stringFinal)
+   
     if(e === "="){
-      resultExpression = eval(stringFinal)  
+    try{
+      resultExpression = eval(expression.expression)  
       setResult(resultExpression) 
     }
-    setExpression({expression:expression.expression+e})  
+      catch{
+        Alert.alert('Operacion invalida');
+     }
+    }
+    setExpression({expression:expression.expression+e})
   }
-  
-
-
 
 
 
@@ -80,12 +72,9 @@ const validation = (string) => {
       }
     }
     cadena3 = stringToCheck.join('')
-    console.log("Con cadena3 papu",cadena3)
     return cadena3
 }
   
-
-
 
 
 
@@ -119,12 +108,6 @@ const validation = (string) => {
       }
     } 
       
-
-
-
-
-
-
     return (
     <>
     
@@ -138,12 +121,11 @@ const validation = (string) => {
 
         {/* ------------------   En este VIEW se va a calcular las expresiones ----------------*/}
         <View style={styles.calculation}>
-            <Text style={styles.numEx}>{expression.expression}</Text>
+            <Text style={styles.numEx}>{validation(expression.expression)}</Text>
         </View>
 
 
 
-        
         <View style={styles.buttons}>
             <View style={styles.numbers}>
               <View>
@@ -166,12 +148,10 @@ const validation = (string) => {
           <View style={styles.operations}>
                  {operation}
           </View>
-
         </View>
       </View>
     </>
    );
-  
 }
 
 const styles = StyleSheet.create({
