@@ -54,7 +54,7 @@ let operation = []
     }
       catch{
         Alert.alert('Operacion invalida');
-     }
+      }
     }
     setExpression({expression:expression.expression+e})
   }
@@ -223,9 +223,9 @@ const styles = StyleSheet.create({
       fontSize:20,
       color:'white'
     },
-    white:{
+   /*  white:{
       color:'white'
-    },
+    }, */
     numEx:{
       fontSize:30,
     }
