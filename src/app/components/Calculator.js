@@ -10,7 +10,8 @@ import {
   StatusBar,
   Button,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput
 } from 'react-native';
 
 import {
@@ -24,28 +25,126 @@ import {
 
 const Calculator = () => {
 
+  const [expression, setExpression] = useState({
+    expression:"",
+  })
+
+  const [result, setResult] = useState('')
+
 
 const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9,'=','.','%']
-const signos = ['+','-','*','/','CE','C']
+const signs  =  ['DEL','C','+','-','*','/',]
+
+
+
+/* Creacion de menu de signos*/
 let operation = []
-  for(let i=0;i<signos.length;i++){
+  for(let i=0;i<signs.length;i++){
    operation.push(
-     <TouchableOpacity style={styles.barraIzq}>
-         <Text style={styles.signosText}>{signos[i]}</Text> 
+     <TouchableOpacity onPress={() => operatorState(signs[i])}>
+         <Text keys={i} style={styles.signosText}>{signs[i]}</Text> 
      </TouchableOpacity>
-   )
+    )
   }
+
+
+/* Funciones  */
+  
+  const viewButton = (e) => {
+    let resultExpression 
+    let stringFinal
+    
+    stringFinal = validation(expression.expression) 
+
+    console.log("Mi stringFinal es --> ",stringFinal)
+    if(e === "="){
+      resultExpression = eval(stringFinal)  
+      setResult(resultExpression) 
+    }
+    setExpression({expression:expression.expression+e})  
+  }
+  
+
+
+
+
+
+
+const validation = (string) => {
+  let stringToCheck = string.split("")
+  let cadena3   
+
+     for(let i=0;i<stringToCheck.length;i++){
+      if(stringToCheck[i] === "="){
+        stringToCheck[i] = ""
+      }
+    }
+    cadena3 = stringToCheck.join('')
+    console.log("Con cadena3 papu",cadena3)
+    return cadena3
+}
+  
+
+
+
+
+
+  const operatorState = (e) => {
+    switch (e) {
+      case "DEL":
+        setExpression ({expression:""})
+        break;
+      
+      case "C":
+        setExpression ({expression:expression.expression.slice(0,-1)})
+        break;
+      case "+":
+        setExpression({expression:expression.expression+e})
+        break;
+        
+      case "-":
+        setExpression({expression:expression.expression+e})
+        break;
+          
+      case "*":
+        setExpression({expression:expression.expression+e})
+        break;
+      
+      case "/":
+        setExpression({expression:expression.expression+e})
+        break;
+
+      default:
+        break;
+      }
+    } 
+      
+
+
+
+
+
 
     return (
     <>
-     
-  
-
-      <View style={styles.container}>
-        <View style={styles.result}></View>
-        <View style={styles.calculation}></View>
-        <View style={styles.buttons}>
+    
+        <View style={styles.container}>
+          
+        {/* ------------------   En este VIEW se va a calcular los resultados ----------------*/}  
+          <View style={styles.result}>
+              <Text style={styles.numEx}>{result}</Text>
+          </View>
         
+
+        {/* ------------------   En este VIEW se va a calcular las expresiones ----------------*/}
+        <View style={styles.calculation}>
+            <Text style={styles.numEx}>{expression.expression}</Text>
+        </View>
+
+
+
+        
+        <View style={styles.buttons}>
             <View style={styles.numbers}>
               <View>
                   
@@ -55,27 +154,24 @@ let operation = []
           renderItem={({item,index}) => (
          
                 <View style={styles.test}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => viewButton(item)}>
                     <Text style={styles.btnText}>{item}</Text>
                   </TouchableOpacity>
                 </View>
            )}
           />
-
           </View>
-         
         </View>  
          
-        
           <View style={styles.operations}>
                  {operation}
           </View>
-
 
         </View>
       </View>
     </>
    );
+  
 }
 
 const styles = StyleSheet.create({
@@ -93,7 +189,6 @@ const styles = StyleSheet.create({
     },
     result:{
       flex:2,
-     
       backgroundColor:'#EAECEE',
     },
     barraIzq:{
@@ -150,7 +245,10 @@ const styles = StyleSheet.create({
     },
     white:{
       color:'white'
-    } 
+    },
+    numEx:{
+      fontSize:30,
+    }
   });
 
   export default Calculator 
