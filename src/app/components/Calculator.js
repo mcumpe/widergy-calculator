@@ -31,7 +31,8 @@ const signs  =  ['DEL','C','+','-','*','/',]
 
 
 
-/* Creacion de menu de signos*/
+
+/* ------------------ Creacion de menu de signos ------------------*/
 let operation = []
   for(let i=0;i<signs.length;i++){
    operation.push(
@@ -40,10 +41,25 @@ let operation = []
      </TouchableOpacity>
     )
   }
+/* ------------------ Creacion de menu de signos ------------------*/
 
 
-/* Funciones  */
+
+
+
+
+/* --------------------  Funciones  --------------------*/
   
+/* Con esta funcion controlo lo valores de input ingresador por teclado */
+  
+  const inputVerification = (value) => {  
+    let check
+    check = value.substring(0)
+    setExpression({expression:validation(check)})
+  }
+
+
+
   const viewButton = (e) => {
     let resultExpression 
    
@@ -56,12 +72,12 @@ let operation = []
         Alert.alert('Operacion invalida');
       }
     }
-    setExpression({expression:expression.expression+e})
+    setExpression({expression:validation(expression.expression+e)})
   }
 
 
 
-
+/* Esta es mi funcion validacion para eliminar el signo = y evitar problemas en los calculos*/
 const validation = (string) => {
   let stringToCheck = string.split("")
   let cadena3   
@@ -75,8 +91,6 @@ const validation = (string) => {
     return cadena3
 }
   
-
-
 
   const operatorState = (e) => {
     switch (e) {
@@ -108,13 +122,17 @@ const validation = (string) => {
         break;
       }
     } 
+
+/* --------------------  Funciones  --------------------*/
+
+    console.log(expression.expression)
       
     return (
     <>
     
         <View style={styles.container}>
           
-        {/* ------------------   En este VIEW se va a calcular los resultados ----------------*/}  
+        {/* ------------------   En este VIEW se va a mostrar los resultados ----------------*/}  
           <View style={styles.result}>
               <Text style={styles.numEx}>{result}</Text>
           </View>
@@ -122,7 +140,7 @@ const validation = (string) => {
 
         {/* ------------------   En este VIEW se va a calcular las expresiones ----------------*/}
         <View style={styles.calculation}>
-            <Text style={styles.numEx}>{validation(expression.expression)}</Text>
+            <TextInput onChangeText={text => inputVerification(text)} style={styles.numEx}>{validation(expression.expression)}</TextInput>
         </View>
 
 
