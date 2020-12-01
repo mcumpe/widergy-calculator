@@ -1,6 +1,5 @@
 import React from 'react';
 import {useState} from 'react'
-import LinearGradient from 'react-native-linear-gradient';
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,7 +16,7 @@ import {
 
 
 
-const Calculator = () => {
+const Calculator = ({navigation}) => {
 
   const [expression, setExpression] = useState({
     expression:"",
@@ -26,7 +25,7 @@ const Calculator = () => {
   const [result, setResult] = useState('')
 
 
-const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9,'=','.','%']
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9,'=','0','.']
 const signs  =  ['DEL','C','+','-','*','/',]
 
 
@@ -59,7 +58,7 @@ let operation = []
   }
 
 
-
+/* Con esta funcion lo que hago es Realizar los calculos cuando aparece el signo = */
   const viewButton = (e) => {
     let resultExpression 
    
@@ -80,18 +79,17 @@ let operation = []
 /* Esta es mi funcion validacion para eliminar el signo = y evitar problemas en los calculos*/
 const validation = (string) => {
   let stringToCheck = string.split("")
-  let cadena3   
-
+  
      for(let i=0;i<stringToCheck.length;i++){
       if(stringToCheck[i] === "="){
         stringToCheck[i] = ""
       }
     }
-    cadena3 = stringToCheck.join('')
-    return cadena3
+    
+    return stringToCheck.join('')
 }
   
-
+/* En esta funcion ingreso los signos de calculos */
   const operatorState = (e) => {
     switch (e) {
       case "DEL":
@@ -125,11 +123,12 @@ const validation = (string) => {
 
 /* --------------------  Funciones  --------------------*/
 
-    console.log(expression.expression)
       
     return (
     <>
-    
+     <Button title="Ir a history" 
+     onPress={() => navigation.navigate('History')}/>
+
         <View style={styles.container}>
           
         {/* ------------------   En este VIEW se va a mostrar los resultados ----------------*/}  
@@ -149,11 +148,14 @@ const validation = (string) => {
             <View style={styles.numbers}>
               <View>
                   
+
+
+
           <FlatList
           numColumns={3}
-          data={numeros}
+          data={numbers}
           renderItem={({item,index}) => (
-         
+          
                 <View style={styles.keypadStyles}>
                   <TouchableOpacity onPress={() => viewButton(item)}>
                     <Text style={styles.btnText}>{item}</Text>
@@ -169,13 +171,14 @@ const validation = (string) => {
           </View>
         </View>
       </View>
+   
     </>
    );
 }
 
 const styles = StyleSheet.create({
     container:{
-      flex:1
+      flex:1,
     },
     keypadStyles:{
        flex:1, 
@@ -183,11 +186,11 @@ const styles = StyleSheet.create({
        padding:15,
     },
     result:{
-      flex:2,
+      flex:4,
       backgroundColor:'#EAECEE',
     },
     calculation:{
-      flex:2,
+      flex:4,
       borderWidth: 1,
       backgroundColor:'#E8F8F5',
     },
