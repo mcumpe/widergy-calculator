@@ -1,12 +1,16 @@
 import React from 'react';
-import {useState} from 'react'
+import 'react-native-gesture-handler';
+import {useState, useEffect} from 'react'
+import { useDispatch,useSelector} from 'react-redux';
+import { saveExpression } from '../Redux/Actions/operationActions'
+
+
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
-  StatusBar,
   Button,
   FlatList,
   TouchableOpacity,
@@ -16,18 +20,25 @@ import {
 
 
 
-const Calculator = ({navigation}) => {
+const Calculator = ({navigation},props) => {
+  const store = useSelector(store => store.opRed)
+  
 
+  
   const [expression, setExpression] = useState({
     expression:"",
   })
 
-  const [result, setResult] = useState('')
+const [result, setResult] = useState('')
+const [cont , setCont] = useState(0)
+
+
+const dispatch =  useDispatch()
 
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9,'=','0','.']
 const signs  =  ['DEL','C','+','-','*','/',]
-
+const butonsFunc = ['SAVE', 'FORM'] 
 
 
 
@@ -41,8 +52,6 @@ let operation = []
     )
   }
 /* ------------------ Creacion de menu de signos ------------------*/
-
-
 
 
 
@@ -66,11 +75,13 @@ let operation = []
     try{
       resultExpression = eval(expression.expression)  
       setResult(resultExpression) 
+
     }
       catch{
         Alert.alert('Operacion invalida');
       }
     }
+    
     setExpression({expression:validation(expression.expression+e)})
   }
 
@@ -91,6 +102,8 @@ const validation = (string) => {
   
 /* En esta funcion ingreso los signos de calculos */
   const operatorState = (e) => {
+    
+
     switch (e) {
       case "DEL":
         setExpression ({expression:""})
@@ -115,6 +128,16 @@ const validation = (string) => {
       case "/":
         setExpression({expression:expression.expression+e})
         break;
+      
+        case "SAVE":
+          
+          dispatch(saveExpression(cont,expression.expression))
+          setCont(cont+1)
+        break;
+
+        case "FORM":
+          Alert.alert('FUNCION AÚN NO DEFINIDA');
+        break;
 
       default:
         break;
@@ -122,13 +145,16 @@ const validation = (string) => {
     } 
 
 /* --------------------  Funciones  --------------------*/
+ 
 
-      
+
     return (
     <>
+
+
      <Button title="Ir a history" 
      onPress={() => navigation.navigate('History')}/>
-
+     
         <View style={styles.container}>
           
         {/* ------------------   En este VIEW se va a mostrar los resultados ----------------*/}  
@@ -136,21 +162,34 @@ const validation = (string) => {
               <Text style={styles.numEx}>{result}</Text>
           </View>
         
-
+        
         {/* ------------------   En este VIEW se va a calcular las expresiones ----------------*/}
         <View style={styles.calculation}>
             <TextInput onChangeText={text => inputVerification(text)} style={styles.numEx}>{validation(expression.expression)}</TextInput>
         </View>
+        
 
+      
 
 
         <View style={styles.buttons}>
             <View style={styles.numbers}>
+              
+              {/* Boton funcionalidades del SAVE y FORM */}
+              
+                <View style={styles.menuFunc}>
+                  {butonsFunc.map(buton => {
+                   return(
+                   <TouchableOpacity onPress={() => operatorState(buton)}>
+                       <Text style={styles.btnFunc}>{buton}</Text>
+                   </TouchableOpacity>
+                   )  
+                })}
+                  
+                </View>
+              
               <View>
                   
-
-
-
           <FlatList
           numColumns={3}
           data={numbers}
@@ -186,11 +225,11 @@ const styles = StyleSheet.create({
        padding:15,
     },
     result:{
-      flex:4,
+      flex:6,
       backgroundColor:'#EAECEE',
     },
     calculation:{
-      flex:4,
+      flex:6,
       borderWidth: 1,
       backgroundColor:'#E8F8F5',
     },
@@ -213,14 +252,11 @@ const styles = StyleSheet.create({
     },
     btnText:{
       fontSize:30,
-      borderWidth: 1,
+      borderWidth: 0.4,
       width:70,
       height:50,
       paddingLeft:25,
-      borderTopLeftRadius: 10,
-      borderTopRightRadius: 10,
-      borderBottomRightRadius:10,
-      borderBottomLeftRadius:10,
+      borderRadius:15,
       backgroundColor:'#F4F6F6'
     },
     
@@ -230,7 +266,28 @@ const styles = StyleSheet.create({
     },
     numEx:{
       fontSize:30,
+    },
+    menuFunc:{
+      flex:1,
+      backgroundColor:'#DFDFDF',
+      flexDirection:'row',
+      alignItems:'center',
+      justifyContent:'space-around'
+    },
+    btnFunc:{
+      fontSize:15,
+      borderWidth: 0.3,
+      width:90,
+      height:50,
+      paddingLeft:25,
+      paddingTop:10,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomRightRadius:10,
+      borderBottomLeftRadius:10,
+      backgroundColor:'white'
     }
   });
 
-  export default Calculator 
+export default Calculator
+

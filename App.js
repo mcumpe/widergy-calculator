@@ -3,8 +3,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text } from 'react-native';
 
+import { Provider } from 'react-redux';
+import {createStore, applyMiddleware} from 'redux'
+
 import History from './src/components/History' 
 import Calculator from './src/components/Calculator'
+import rootReducer from './src/Redux/Reducers/rootReducer';
+import thunk from 'redux-thunk';
+
+const myStore = createStore(rootReducer, applyMiddleware(thunk))
 
 const Stack = createStackNavigator();
 
@@ -12,18 +19,20 @@ const Stack = createStackNavigator();
 const App = () => { 
   return (
     <>
-     
-     <NavigationContainer>
+     <Provider store={myStore}>
+        <NavigationContainer>
           <Stack.Navigator
+
           initialRouteName="Home"
           screenOptions={{
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#18152a',
+              backgroundColor: '#000000',
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
               fontWeight: 'bold',
+              color:'white'
             },
           }}>
             
@@ -34,22 +43,18 @@ const App = () => {
            }}
            component={Calculator} 
            />
-       
 
-            <Stack.Screen  
-         name="History" 
-         options={{
-           title:'HISTORIAL',
-         }}
-         component={History} 
+          <Stack.Screen  
+            name="History" 
+            options={{
+            title:'HISTORIAL',
+          }}
+          component={History} 
          /> 
 
-
-         
-
         </Stack.Navigator>
-     </NavigationContainer>
-   
+      </NavigationContainer>
+    </Provider>
    </>
   );
 };
