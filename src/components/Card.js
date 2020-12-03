@@ -1,7 +1,7 @@
 import React from 'react';
-import {useState} from 'react'
-import {useDispatch} from 'react-redux';
-import { saveExpression } from '../Redux/Actions/operationActions'
+import {useState,useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux';
+import { saveExpression , editExpression,deleteIdExpression} from '../Redux/Actions/operationActions'
 import {
   SafeAreaView,
   StyleSheet,
@@ -20,54 +20,69 @@ import {
 const Card = (props) => {
 
    const [able, setAble] = useState(false)
+   const [valoresP, setValoresP] = useState([{
+      id:'',text:''
+}])
+const [P, setP] = useState('')
    
-   const cambiarAble = () => {
-           setAble(true)
+const store = useSelector(store => store.opRed.expression)
+const dispatch =  useDispatch()
+  
+   
+
+
+   const mostrar = (valor) => {    
+       console.log("mostraste",valor,props.id)
+
+    for(let i=0; i<store.length; i++){
+           if(store[i].id === props.id){ 
+            console.log("MIO",props.id, "===", store[i].id)   
+           dispatch(editExpression(props.id,valor)) 
+          }
+       } 
    }
+  console.log("Mi sotre de la card",store)
    
 
 
-   const dispatch =  useDispatch()
-
-   const modifyResults = (e) => {
+   const modifyResults = (e,id) => {
 
         switch (e) {
           
             case "X":
-               break;
+               dispatch(deleteIdExpression(props.id))
+            break;
 
             case "Edit":
-           
+                 setAble(true) 
             break;
 
             case "✔":
-                Alert.alert("Ha editado de manera correcta")
+                
             break;
           
             default:
                break;
           }
         } 
-   
     
-   
    return (
    <>
 
 <View style={styles.container}>    
     <View style={styles.card}>
        
-       <TextInput editable={able} style={styles.cardText}>{props.valor}</TextInput>
+       <TextInput editable={able} style={styles.cardText} onChangeText={(e) => setP(e)}>{props.valor}</TextInput>
        
-            <TouchableOpacity style={styles.cardButtons} onPress={() => modifyResults('X')}>
+            <TouchableOpacity style={styles.cardButtons}  onPress={() => modifyResults('X')}>
                 <Text style={styles.delete}>X</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.cardButtons} onPress={() => cambiarAble()}>
+            <TouchableOpacity style={styles.cardButtons} onPress={() => modifyResults("Edit")}>
                 <Text style={styles.edit}>Edit</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.cardButtons} onPress={() => modifyResults('✔')}>
+            <TouchableOpacity style={styles.cardButtons} onPress={(valor) => mostrar(P)}>
                 <Text style={styles.edit}>✔</Text>
             </TouchableOpacity>                      
     </View>  

@@ -8,13 +8,14 @@ import {
 
 
 const initalState = {
-    expression:[], 
+    expression:[]
 }
 
 const operationReducer = (state = initalState, action) => {
     switch(action.type){
         case 'SAVE_OPERATION':
-            return {
+    
+           return{
                 ...state, 
                 expression: [...state.expression,
                 {
@@ -24,15 +25,33 @@ const operationReducer = (state = initalState, action) => {
               ],
             };
 
+            case 'EDIT_EXPRESSION':            
+                
+            let arrOriginal = [...state.expression]
+              
+                for(let i=0; i<arrOriginal.length; i++){
+                    if(arrOriginal[i].id === action.payload.id){
+                        arrOriginal[i].operation = action.payload.operation
+                    }
+                }
+                return {
+                  ...state,
+                  expression: arrOriginal
+            }
 
-    case 'DELETE_EXPRESSION':
-        return {
-            ...state, 
-            expression: []
+           case 'DELETE_ID_EXPRESSION':
+
+           return {
+                ...state,
+                expression: state.expression.filter(ex => ex.id !== action.payload.id),
+           }
+              
+
+           case 'DELETE_EXPRESSION':
+               return {
+                ...state, 
+                expression: []
     };
-
-    
-
         default:
             return state
     }

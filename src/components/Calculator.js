@@ -4,7 +4,6 @@ import {useState, useEffect} from 'react'
 import { useDispatch,useSelector} from 'react-redux';
 import { saveExpression } from '../Redux/Actions/operationActions'
 
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,22 +18,20 @@ import {
 } from 'react-native';
 
 
-
 const Calculator = ({navigation},props) => {
-  const store = useSelector(store => store.opRed)
-  
-
   
   const [expression, setExpression] = useState({
     expression:"",
   })
 
 const [result, setResult] = useState('')
-const [cont , setCont] = useState(0)
+const [cont , setCont] = useState(1)
+
+
 
 
 const dispatch =  useDispatch()
-
+const store = useSelector(store => store.opRed.expression)
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9,'=','0','.']
 const signs  =  ['DEL','C','+','-','*','/',]
@@ -130,9 +127,9 @@ const validation = (string) => {
         break;
       
         case "SAVE":
-          
-          dispatch(saveExpression(cont,expression.expression))
           setCont(cont+1)
+          dispatch(saveExpression(cont,expression.expression))
+          
         break;
 
         case "FORM":

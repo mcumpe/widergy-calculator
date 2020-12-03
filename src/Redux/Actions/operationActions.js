@@ -19,7 +19,26 @@
         }
     }); 
     
-    ty
+    export const editExpression = (id, operation) => (console.log(id , " -- ", operation),{  
+      
+      type: 'EDIT_EXPRESSION',
+      
+      payload:{
+        id:id,
+        operation:operation
+      }
+  }); 
+
+    
+  export const deleteIdExpression = (id) => (console.log("Mi Id en actions",id),{  
+        
+    type: 'DELETE_ID_EXPRESSION',
+    payload:{
+      id:id
+    }
+}); 
+
+
  
     export const deleteExpression = (operation) => ({  
         

@@ -39,7 +39,8 @@ const History = ({navigation},props) => {
 
           
           {listExpression.map((results, index)=> {
-            return <Card valor={listExpression[index].operation}/>
+            return <Card valor={listExpression[index].operation}
+                         id={listExpression[index].id}/>
           })}       
     </>
     )
