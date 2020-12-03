@@ -20,31 +20,26 @@ import {
 const Card = (props) => {
 
    const [able, setAble] = useState(false)
-   const [valoresP, setValoresP] = useState([{
-      id:'',text:''
-}])
-const [P, setP] = useState('')
+   const [staticValue, setStaticValue] = useState('')
    
-const store = useSelector(store => store.opRed.expression)
-const dispatch =  useDispatch()
+   const store = useSelector(store => store.opRed.expression)
+   const dispatch =  useDispatch()
   
    
+   const viewInfo = (valor) => {    
+       if(able === false){
+          return 0
+      }
 
-
-   const mostrar = (valor) => {    
-       console.log("mostraste",valor,props.id)
-
-    for(let i=0; i<store.length; i++){
-           if(store[i].id === props.id){ 
-            console.log("MIO",props.id, "===", store[i].id)   
+      for(let i=0; i<store.length; i++){
+           if(store[i].id === props.id){   
            dispatch(editExpression(props.id,valor)) 
-          }
-       } 
+         }
+      } 
+   Alert.alert("Expresion modificada")
    }
-  console.log("Mi sotre de la card",store)
+
    
-
-
    const modifyResults = (e,id) => {
 
         switch (e) {
@@ -56,11 +51,7 @@ const dispatch =  useDispatch()
             case "Edit":
                  setAble(true) 
             break;
-
-            case "✔":
-                
-            break;
-          
+        
             default:
                break;
           }
@@ -72,7 +63,7 @@ const dispatch =  useDispatch()
 <View style={styles.container}>    
     <View style={styles.card}>
        
-       <TextInput editable={able} style={styles.cardText} onChangeText={(e) => setP(e)}>{props.valor}</TextInput>
+       <TextInput editable={able} style={styles.cardText} onChangeText={(e) => setStaticValue(e)}>{props.valor}</TextInput>
        
             <TouchableOpacity style={styles.cardButtons}  onPress={() => modifyResults('X')}>
                 <Text style={styles.delete}>X</Text>
@@ -82,7 +73,7 @@ const dispatch =  useDispatch()
                 <Text style={styles.edit}>Edit</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.cardButtons} onPress={(valor) => mostrar(P)}>
+            <TouchableOpacity style={styles.cardButtons} onPress={(valor) => viewInfo(staticValue)}>
                 <Text style={styles.edit}>✔</Text>
             </TouchableOpacity>                      
     </View>  
@@ -152,4 +143,4 @@ export default Card
 
 
    
-   /*  listExpression.splice(0, listExpression.length) */
+  

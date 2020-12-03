@@ -19,7 +19,7 @@
         }
     }); 
     
-    export const editExpression = (id, operation) => (console.log(id , " -- ", operation),{  
+    export const editExpression = (id, operation) => ({  
       
       type: 'EDIT_EXPRESSION',
       
@@ -30,7 +30,7 @@
   }); 
 
     
-  export const deleteIdExpression = (id) => (console.log("Mi Id en actions",id),{  
+  export const deleteIdExpression = (id) => ({  
         
     type: 'DELETE_ID_EXPRESSION',
     payload:{

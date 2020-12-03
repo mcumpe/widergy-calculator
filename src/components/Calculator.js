@@ -28,8 +28,6 @@ const [result, setResult] = useState('')
 const [cont , setCont] = useState(1)
 
 
-
-
 const dispatch =  useDispatch()
 const store = useSelector(store => store.opRed.expression)
 
