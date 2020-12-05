@@ -1,6 +1,5 @@
 import React from 'react';
-import {useState} from 'react'
-import { connect, useSelector,useDispatch} from 'react-redux';
+import { useSelector,useDispatch} from 'react-redux';
 import Card from '../components/Card'
 import { deleteExpression } from '../Redux/Actions/operationActions'
 import {

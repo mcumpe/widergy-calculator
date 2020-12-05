@@ -3,6 +3,8 @@ import 'react-native-gesture-handler';
 import {useState, useEffect} from 'react'
 import { useDispatch,useSelector} from 'react-redux';
 import { saveExpression } from '../Redux/Actions/operationActions'
+import axios from 'axios'
+import { API } from '../config/API'   
 
 import {
   SafeAreaView,
@@ -26,7 +28,7 @@ const Calculator = ({navigation},props) => {
 
 const [result, setResult] = useState('')
 const [cont , setCont] = useState(1)
-
+const [show, setShow] = useState(false)
 
 const dispatch =  useDispatch()
 const store = useSelector(store => store.opRed.expression)
@@ -34,6 +36,59 @@ const store = useSelector(store => store.opRed.expression)
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9,'=','0','.']
 const signs  =  ['DEL','C','+','-','*','/',]
 const butonsFunc = ['SAVE', 'FORM'] 
+
+                  
+
+           useEffect(() => {
+          
+                  /* getAPI() */
+
+                 },[]);
+
+
+
+
+//Con getSearch hago el pedido a la API para buscar las expresiones
+const getAPI = async store => {
+
+  fetch('https://private-4de685-martincumpe.apiary-mock.com/operation')
+  .then(res => res.json())
+  .then(data => {
+    data.map(item => {
+           item.resultados.map(response => {
+             dispatch(saveExpression(response.id, response.operation))
+         
+       })
+    })
+  })
+}
+
+
+const postAPI = (id, operation) => {
+  Alert.alert(
+    '¡El metodo POST se ejecuto correctamente!',
+    '¡La operacion se registro con EXITO!',
+    [
+       {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel'
+      },
+      { text: 'OK', onPress: () => console.log('OK Pressed') }
+    ],
+    { cancelable: false }
+  );
+
+  return async (dispatch, getState) => {
+    const response = await axios.post(`https://private-4de685-martincumpe.apiary-mock.com/operation`,{id:id, operation:operation})
+    const info = response.data
+   
+  }
+}
+
+
+
+      
 
 
 
@@ -94,10 +149,12 @@ const validation = (string) => {
     
     return stringToCheck.join('')
 }
+
+
+
   
 /* En esta funcion ingreso los signos de calculos */
   const operatorState = (e) => {
-    
 
     switch (e) {
       case "DEL":
@@ -127,7 +184,7 @@ const validation = (string) => {
         case "SAVE":
           setCont(cont+1)
           dispatch(saveExpression(cont,expression.expression))
-          
+          postAPI()
         break;
 
         case "FORM":
@@ -206,6 +263,7 @@ const validation = (string) => {
         </View>
       </View>
    
+
     </>
    );
 }

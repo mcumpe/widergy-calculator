@@ -1,7 +1,8 @@
 import React from 'react';
-import {useState,useEffect} from 'react'
-import {useDispatch, useSelector} from 'react-redux';
-import { saveExpression , editExpression,deleteIdExpression} from '../Redux/Actions/operationActions'
+import { useState } from 'react'
+import { useDispatch, useSelector} from 'react-redux';
+import { editExpression,deleteIdExpression } from '../Redux/Actions/operationActions'
+import axios from 'axios'
 import {
   SafeAreaView,
   StyleSheet,
@@ -25,7 +26,32 @@ const Card = (props) => {
    const store = useSelector(store => store.opRed.expression)
    const dispatch =  useDispatch()
   
-   
+
+
+   const deleteAPI = (id, operation) => {
+    Alert.alert(
+      '¡El metodo DELETE se ejecuto correctamente!',
+      '¡La operacion se registro con EXITO!',
+      [
+         {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel'
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') }
+      ],
+      { cancelable: false }
+    );
+  
+    return async (dispatch, getState) => {
+      const response = await axios.delete(`https://private-4de685-martincumpe.apiary-mock.com/operation`,{id:id, operation:operation})
+      const info = response.data
+    }
+  }
+
+
+
+
    const viewInfo = (valor) => {    
        if(able === false){
           return 0
@@ -46,6 +72,7 @@ const Card = (props) => {
           
             case "X":
                dispatch(deleteIdExpression(props.id))
+               deleteAPI(props.id)
             break;
 
             case "Edit":
@@ -60,8 +87,8 @@ const Card = (props) => {
    return (
    <>
 
-<View style={styles.container}>    
-    <View style={styles.card}>
+    <View style={styles.container}>    
+      <View style={styles.card}>
        
        <TextInput editable={able} style={styles.cardText} onChangeText={(e) => setStaticValue(e)}>{props.valor}</TextInput>
        
@@ -76,8 +103,9 @@ const Card = (props) => {
             <TouchableOpacity style={styles.cardButtons} onPress={(valor) => viewInfo(staticValue)}>
                 <Text style={styles.edit}>✔</Text>
             </TouchableOpacity>                      
-    </View>  
-</View>   
+        </View>  
+    </View>   
+
    </>
    )
 }
