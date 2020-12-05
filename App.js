@@ -1,39 +1,69 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { View, Text } from 'react-native';
 
-import React from 'react';
-import LinearGradient from 'react-native-linear-gradient'
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import { Provider } from 'react-redux';
+import {createStore, applyMiddleware} from 'redux'
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import Calculator from './src/app/components/Calculator'
+import History from './src/components/History' 
+import Calculator from './src/components/Calculator'
+import rootReducer from './src/Redux/Reducers/rootReducer';
+import thunk from 'redux-thunk';
+
+const myStore = createStore(rootReducer, applyMiddleware(thunk))
+
+const Stack = createStackNavigator();
+
+
 const App = () => { 
   return (
     <>
-      <Calculator/>
+     <Provider store={myStore}>
+        <NavigationContainer>
+          <Stack.Navigator
+
+          initialRouteName="Home"
+          screenOptions={{
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#000000',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color:'white'
+            },
+          }}>
+            
+          <Stack.Screen  
+             name="Home"
+             options={{
+             title:'CALCULADORA',
+           }}
+           component={Calculator} 
+           />
+
+          <Stack.Screen  
+            name="History" 
+            options={{
+            title:'HISTORIAL',
+          }}
+          component={History} 
+         /> 
+
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
    </>
   );
 };
 
 
 export default App;
+
+
+
+
 
 
