@@ -1,19 +1,23 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 
 import { Provider } from 'react-redux';
 import {createStore, applyMiddleware} from 'redux'
 
 import History from './src/components/History' 
 import Calculator from './src/components/Calculator'
+import Survey from './src/components/Survey'
+
 import rootReducer from './src/Redux/Reducers/rootReducer';
 import thunk from 'redux-thunk';
+/* import { Form } from 'redux-form'; */
 
 const myStore = createStore(rootReducer, applyMiddleware(thunk))
 
 const Stack = createStackNavigator();
+
 
 
 const App = () => { 
@@ -35,7 +39,15 @@ const App = () => {
               color:'white'
             },
           }}>
-            
+          
+          <Stack.Screen  
+             name="Encuesta"
+             options={{
+             title:'ENCUESTA',
+           }}
+           component={Survey} 
+           />
+
           <Stack.Screen  
              name="Home"
              options={{

@@ -28,7 +28,7 @@ const Calculator = ({navigation},props) => {
 
 const [result, setResult] = useState('')
 const [cont , setCont] = useState(1)
-const [show, setShow] = useState(false)
+
 
 const dispatch =  useDispatch()
 const store = useSelector(store => store.opRed.expression)
@@ -41,7 +41,7 @@ const butonsFunc = ['SAVE', 'FORM']
 
            useEffect(() => {
           
-                  /* getAPI() */
+                 /*   getAPI()  */
 
                  },[]);
 
@@ -182,13 +182,31 @@ const validation = (string) => {
         break;
       
         case "SAVE":
+          if(expression.expression === ''){
+          
+            Alert.alert(
+              '¡ERROR AL INTENTAR GUARDAR EXPRESION!',
+              '¡No se registro operacion!',
+              [
+                 {
+                  text: 'Cancel',
+                  style: 'cancel'
+                },
+                { text: 'OK',}
+              ],
+              { cancelable: false }
+            );
+            break;
+          
+          }
+          
           setCont(cont+1)
           dispatch(saveExpression(cont,expression.expression))
           postAPI()
         break;
 
         case "FORM":
-          Alert.alert('FUNCION AÚN NO DEFINIDA');
+          navigation.navigate('Encuesta')
         break;
 
       default:
@@ -245,6 +263,7 @@ const validation = (string) => {
           <FlatList
           numColumns={3}
           data={numbers}
+          keyExtractor={(index) => index.toString()}
           renderItem={({item,index}) => (
           
                 <View style={styles.keypadStyles}>

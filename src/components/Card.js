@@ -62,7 +62,7 @@ const Card = (props) => {
            dispatch(editExpression(props.id,valor)) 
          }
       } 
-   Alert.alert("Expresion modificada")
+   Alert.alert("¡Expresion modificada con EXITO!")
    }
 
    
