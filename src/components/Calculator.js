@@ -41,7 +41,7 @@ const butonsFunc = ['SAVE', 'FORM']
 
            useEffect(() => {
           
-                  /* getAPI() */
+                 /*   getAPI()  */
 
                  },[]);
 
@@ -188,7 +188,7 @@ const validation = (string) => {
         break;
 
         case "FORM":
-          Alert.alert('FUNCION AÚN NO DEFINIDA');
+          navigation.navigate('Formulario')
         break;
 
       default:

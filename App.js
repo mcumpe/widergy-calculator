@@ -8,8 +8,11 @@ import {createStore, applyMiddleware} from 'redux'
 
 import History from './src/components/History' 
 import Calculator from './src/components/Calculator'
+import Survey from './src/components/Survey'
+
 import rootReducer from './src/Redux/Reducers/rootReducer';
 import thunk from 'redux-thunk';
+/* import { Form } from 'redux-form'; */
 
 const myStore = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -35,7 +38,15 @@ const App = () => {
               color:'white'
             },
           }}>
-            
+          
+          <Stack.Screen  
+             name="Formulario"
+             options={{
+             title:'FORMULARIO',
+           }}
+           component={Survey} 
+           />
+
           <Stack.Screen  
              name="Home"
              options={{
