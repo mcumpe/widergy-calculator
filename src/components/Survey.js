@@ -1,13 +1,43 @@
 import { NONE } from 'apisauce';
 import React, { useState } from 'react'
 import { SafeAreaView, StyleSheet, ScrollView, View, Text, Button, FlatList, TouchableOpacity, TextInput,Alert } from 'react-native';
-import {Field, reduxForm } from 'redux-form'
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
+import {Field, reduxForm, reset, destroy } from 'redux-form'
+import { connect } from 'react-redux';
+
+//Funciones de Validaciones
+
+const required = value => {
+  value ? undefined : 'Required'
+}
+
+const checkTel = value => {
+      if(value && isNaN(Number(value))){
+           return "¡El telefono debe ser solo numeros!"
+      }
+   }
+
+   const checkUser = value => {
+    if (value && /[^a-zA-Z ]/i.test(value)) {
+      return '¡Solo se permiten letras!';
+    }
+  };
+
+const telLength = value => value && value.length > 10 ? "El telefono debe tener 10 caracteres o menos" : undefined
+
+//Funciones de Validaciones
+
+  
 
 
-const renderField = ({label}) => {
+
+
+const renderField = ({label,meta:{ touched, error, warning },  input: { onChange, ...restInput }}) => {
 const [flag, setFlag] = useState(false)
 
-  return (
+
+
+return (
     <>
       <View style={{flexDirection:'row',height:50, alignItems:'center'}}>
         <View>
@@ -15,7 +45,13 @@ const [flag, setFlag] = useState(false)
         </View>
         
         <View>
-        <TextInput style={label === 'Comentario' ? styles.textArea : styles.input } multiline={label === 'Comentario' ? true : false}  numberOfLines={10}/>
+        <TextInput style={label === 'Comentario' ? styles.textArea : styles.input } 
+        multiline={label === 'Comentario' ? true : false}  
+        numberOfLines={10} 
+        onChangeText={onChange} {...restInput} 
+        />
+         {touched && ((error && <Text style={{color: 'red',fontSize:10}}>{error}</Text>) ||
+          (warning && <Text style={{color: 'orange'}}>{warning}</Text>))}
         </View>
       </View>
     </>
@@ -23,30 +59,44 @@ const [flag, setFlag] = useState(false)
 }
 
 
-let Survey = props => {
-/* 
-const {handleSubmit} = props */
-
-const handleSubmit = (valueP) => {
-  Alert.alert("Mis valores props handleSubmit son ",valueP)
+const submit = (values) => {
+  console.log(JSON.stringify(values))
 }
+
+
+/* ¡------------------------------------------ Funcion Encuestra -------------------------------------------------! */
+let Survey = (props,) => {
+  const [userName ,setUserName] = useState('')
+
+  const handleOnChange = (user) => {
+    setUserName(user)
+  }
+  
+  const destroyForm = () => {
+        /* destroy('survey') */
+  /*       navigation.navigate('Home')  */
+        
+  }
+
+
+const {handleSubmit} = props 
 
     return (
     <>
           <View style={{flex: 1, flexDirection:'column',margin:40,justifyContent:'flex-start'}}>
             <Text style={styles.titleForm}>Formulario</Text>
             
-            <Field label='Nombre' component={renderField} name={"nombre"} />
-            <Field label='Telefono' component={renderField} name={"telefono"} />
-            <Field label='Comentario' component={renderField} name={"comentarios"} />
+            <Field label='Usuario' component={renderField} name={"usuario"} validate={[required, checkUser]} onChange={handleOnChange}/>
+            <Field label='Telefono' component={renderField} name={"telefono"} validate={[required, checkTel, telLength]}/>
+            <Field label='Comentario' component={renderField} name={"comentarios"} validate={required} />
 
        <View style={{flexDirection:'row', margin:10, alignItems:'center'}}>
        
-          <TouchableOpacity style={styles.cardButton}>
+          <TouchableOpacity style={styles.cardButton} onPress={handleSubmit(submit)}>
             <Text style={styles.buttonSubmit}>Submit</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => console.log("Clikeaste Cancel")} style={styles.cardButton}>
+          <TouchableOpacity onPress={destroyForm()} style={styles.cardButton}>
             <Text style={styles.buttonCancel}>Cancel</Text>
           </TouchableOpacity>
        
@@ -57,8 +107,14 @@ const handleSubmit = (valueP) => {
   }
   
   Survey = reduxForm({
-    form: 'survey'
+    form: 'survey',
+    enableReinitialize: true,
   })(Survey) 
+    
+  /* Survey = connect(state => ({
+    initialValues: state.ReducerReduxForm,
+    storeUserName: state.ReducerReduxForm.userName, 
+  }))(Survey); */
 
   const styles = StyleSheet.create({
   textArea:{
