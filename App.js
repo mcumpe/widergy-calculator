@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 
 import { Provider } from 'react-redux';
 import {createStore, applyMiddleware} from 'redux'
@@ -17,6 +17,7 @@ import thunk from 'redux-thunk';
 const myStore = createStore(rootReducer, applyMiddleware(thunk))
 
 const Stack = createStackNavigator();
+
 
 
 const App = () => { 
@@ -40,9 +41,9 @@ const App = () => {
           }}>
           
           <Stack.Screen  
-             name="Formulario"
+             name="Encuesta"
              options={{
-             title:'FORMULARIO',
+             title:'ENCUESTA',
            }}
            component={Survey} 
            />

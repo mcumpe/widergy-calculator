@@ -38,7 +38,7 @@ const History = ({navigation},props) => {
 
           
           {listExpression.map((results, index)=> {
-            return <Card valor={listExpression[index].operation}
+            return <Card key={index} valor={listExpression[index].operation}
                          id={listExpression[index].id}/>
           })}       
     </>
@@ -61,7 +61,7 @@ const History = ({navigation},props) => {
  cardButtons:{
   flexDirection:'row',
   justifyContent:'center',
-  marginTop:15
+  marginTop:15,
  },
 })
  
