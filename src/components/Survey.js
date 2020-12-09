@@ -1,9 +1,13 @@
 import { NONE } from 'apisauce';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView, StyleSheet, ScrollView, View, Text, Button, FlatList, TouchableOpacity, TextInput,Alert } from 'react-native';
-import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import {Field, reduxForm, reset, destroy } from 'redux-form'
-import { connect } from 'react-redux';
+import {Field, reduxForm, reset, destroy ,change} from 'redux-form'
+import { connect, useDispatch, useSelector } from 'react-redux';
+import {saveUser}  from '../Redux/Actions/operationActions'
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios'
+import AwesomeAlert from 'react-native-awesome-alerts';
+ 
 
 //Funciones de Validaciones
 
@@ -18,30 +22,30 @@ const checkTel = value => {
    }
 
    const checkUser = value => {
-    if (value && /[^a-zA-Z ]/i.test(value)) {
+    if (value && /[^a-zA-Z ]/i.test(value)){
       return '¡Solo se permiten letras!';
     }
-  };
+  }
 
 const telLength = value => value && value.length > 10 ? "El telefono debe tener 10 caracteres o menos" : undefined
 
 //Funciones de Validaciones
 
-  
 
 
 
 
-const renderField = ({label,meta:{ touched, error, warning },  input: { onChange, ...restInput }}) => {
+
+const renderField = ({label,meta:{ touched, error, warning },input,  input: { onChange, ...restInput }}) => {
 const [flag, setFlag] = useState(false)
-
-
+/* --------------------> BORRAR         const store = useSelector(store => store.opRed.userName)             <--------------------  BORRAR*/
+  
 
 return (
     <>
       <View style={{flexDirection:'row',height:50, alignItems:'center'}}>
         <View>
-        <Text style={{fontSize:14, fontWeight:'bold', width:80}}>{label}:</Text>
+        <Text style={{fontSize:14, fontWeight:'bold', width:80,color:'white'}}>{label}:</Text>
         </View>
         
         <View>
@@ -49,6 +53,8 @@ return (
         multiline={label === 'Comentario' ? true : false}  
         numberOfLines={10} 
         onChangeText={onChange} {...restInput} 
+        value={input.value}
+        
         />
          {touched && ((error && <Text style={{color: 'red',fontSize:10}}>{error}</Text>) ||
           (warning && <Text style={{color: 'orange'}}>{warning}</Text>))}
@@ -59,34 +65,49 @@ return (
 }
 
 
-const submit = (values) => {
-  console.log(JSON.stringify(values))
-}
+
 
 
 /* ¡------------------------------------------ Funcion Encuestra -------------------------------------------------! */
-let Survey = (props,) => {
+let Survey  = (props) => {
+  
   const [userName ,setUserName] = useState('')
+  const [message, setMessage] = useState('')
+
+  const {handleSubmit} = props 
+  const navigation = useNavigation();
+  const dispatch = useDispatch() 
+ 
+  
+
+  const submit = async (values) => {
+    const keyResponse = { input_values: { values } };
+    const response = await axios.post('https://private-e75208-formresponse.apiary-mock.com/form_response', keyResponse);
+    if(response != null){
+      Alert.alert("¡Gracias por el mensaje!")
+    }
+  }
 
   const handleOnChange = (user) => {
     setUserName(user)
   }
   
   const destroyForm = () => {
-        /* destroy('survey') */
-  /*       navigation.navigate('Home')  */
-        
+    dispatch(saveUser(userName))         
+    destroy('survey')
+    navigation.navigate({name:'Home'})     
   }
 
 
-const {handleSubmit} = props 
 
     return (
     <>
+       <SafeAreaView style={{ flex: 1, backgroundColor: '#19191b' }}>
+        <ScrollView>
           <View style={{flex: 1, flexDirection:'column',margin:40,justifyContent:'flex-start'}}>
             <Text style={styles.titleForm}>Formulario</Text>
             
-            <Field label='Usuario' component={renderField} name={"usuario"} validate={[required, checkUser]} onChange={handleOnChange}/>
+            <Field label='Usuario' component={renderField} name={"userName"} validate={[required, checkUser]} onChange={handleOnChange}/>
             <Field label='Telefono' component={renderField} name={"telefono"} validate={[required, checkTel, telLength]}/>
             <Field label='Comentario' component={renderField} name={"comentarios"} validate={required} />
 
@@ -96,12 +117,14 @@ const {handleSubmit} = props
             <Text style={styles.buttonSubmit}>Submit</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={destroyForm()} style={styles.cardButton}>
+          <TouchableOpacity onPress={destroyForm} style={styles.cardButton}>
             <Text style={styles.buttonCancel}>Cancel</Text>
           </TouchableOpacity>
        
           </View>
       </View>
+      </ScrollView>
+      </SafeAreaView>
     </>
     )
   }
@@ -110,12 +133,15 @@ const {handleSubmit} = props
     form: 'survey',
     enableReinitialize: true,
   })(Survey) 
-    
-  /* Survey = connect(state => ({
-    initialValues: state.ReducerReduxForm,
-    storeUserName: state.ReducerReduxForm.userName, 
-  }))(Survey); */
 
+   Survey = connect(
+    state => ({
+      initialValues: state.opRed,
+      storeUserName: state.opRed.userName,
+  }))(Survey); 
+ 
+
+  
   const styles = StyleSheet.create({
   textArea:{
     
@@ -125,19 +151,21 @@ const {handleSubmit} = props
     width:220,
     textAlignVertical: 'top',
     borderColor:'steelblue',
-    borderWidth:2,
+    borderWidth:1,
     marginTop:40,
-    borderRadius:10 
+    borderRadius:10,
+    backgroundColor:'#B5D3D2' 
   },
   
   input:{
     borderColor:'steelblue',
-    borderWidth:2, 
+    borderWidth:1, 
     height:37, 
     width:220, 
     padding:5,
     paddingTop:10,
-    borderRadius:10 
+    borderRadius:10,
+    backgroundColor:'#89DCF5' 
     },
 
     buttonCancel:{
@@ -169,7 +197,8 @@ const {handleSubmit} = props
       width:200, 
       textAlign:'center',
       margin:40, 
-      fontFamily:'Orbitron-Regular'
+      fontFamily:'Orbitron-Regular',
+      color:'white'
     },
     cardButton:{
       flexDirection:'row',

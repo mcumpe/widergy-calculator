@@ -8,7 +8,8 @@ import {
 
 
 const initalState = {
-    expression:[]
+    expression:[],
+    userName:''
 }
 
 const operationReducer = (state = initalState, action) => {
@@ -51,10 +52,18 @@ const operationReducer = (state = initalState, action) => {
                return {
                 ...state, 
                 expression: []
-    };
-        default:
-            return state
-    }
-}
+            };
+            
+            case 'SAVE_USERNAME':
+              return {
+                  userName: action.payload.user,
+                };
+          
+              default:
+                return state;
+            }
+          }; 
+ 
+  
 
-export default operationReducer 
+export default operationReducer

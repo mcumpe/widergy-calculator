@@ -21,7 +21,7 @@ const History = ({navigation},props) => {
 
   const listExpression = useSelector(store => store.opRed.expression)
   const dispatch =  useDispatch()
-
+    console.log(listExpression)
   const deleteAll = () => {
     dispatch(deleteExpression())
     Alert.alert("Has limpiado el historial")
@@ -29,6 +29,8 @@ const History = ({navigation},props) => {
  
   return (
     <>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#19191b' }}>
+        <ScrollView>  
        <Button title="Ir a Home" 
        onPress={() => navigation.navigate('Home')}/>
 
@@ -40,7 +42,10 @@ const History = ({navigation},props) => {
           {listExpression.map((results, index)=> {
             return <Card key={index} valor={listExpression[index].operation}
                          id={listExpression[index].id}/>
-          })}       
+          })}     
+          
+          </ScrollView>
+      </SafeAreaView> 
     </>
     )
   }

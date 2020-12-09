@@ -39,14 +39,6 @@ const App = () => {
               color:'white'
             },
           }}>
-          
-          <Stack.Screen  
-             name="Encuesta"
-             options={{
-             title:'ENCUESTA',
-           }}
-           component={Survey} 
-           />
 
           <Stack.Screen  
              name="Home"
@@ -63,6 +55,14 @@ const App = () => {
           }}
           component={History} 
          /> 
+        
+        <Stack.Screen  
+             name="Encuesta"
+             options={{
+             title:'ENCUESTA',
+           }}
+           component={Survey} 
+           />
 
         </Stack.Navigator>
       </NavigationContainer>
