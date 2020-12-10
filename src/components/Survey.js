@@ -7,13 +7,15 @@ import {saveUser}  from '../Redux/Actions/operationActions'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 import RenderField from '../components/RenderField'
-import {required, checkTel, checkUser, telLength } from '../components/Validations'
+import {required, checkTel, checkUser, telLength ,checkFields} from '../components/Validations'
 
 
 
 let Survey  = (props) => {
   
   const [userName ,setUserName] = useState('')
+  const [cell ,setCell] = useState('')
+  const [comment ,setComment] = useState('')
 
 
   const {handleSubmit} = props 
@@ -23,22 +25,41 @@ let Survey  = (props) => {
   
 
   const submit = async (values) => {
+    
+    if(!checkFields(userName,cell,comment)){
+      Alert.alert("Tiene que llenar todos los campos")
+      return 0
+    
+    }else{
+
     const keyResponse = { input_values: { values } };
     const response = await axios.post('https://private-e75208-formresponse.apiary-mock.com/form_response', keyResponse);
     if(response != null){
       Alert.alert("¡Gracias por el mensaje!")
     }
   }
+}
 
   const handleOnChange = (user) => {
     setUserName(user)
   }
+
+  const savePhone = (user) => {
+    setCell(user)
+  }
+  
+  const saveComment = (user) => {
+    setComment(user)
+  }
+
   
   const destroyForm = () => {
     dispatch(saveUser(userName))         
     destroy('survey')
     navigation.navigate({name:'Home'})     
   }
+
+ /*  console.log(userName, cell, comment) */
 
        
 
@@ -50,8 +71,8 @@ let Survey  = (props) => {
             <Text style={styles.titleForm}>Formulario</Text>
             
             <Field label='Usuario' component={RenderField} name={"userName"} validate={[required, checkUser]} onChange={handleOnChange}/>
-            <Field label='Telefono' component={RenderField} name={"telefono"} validate={[required, checkTel, telLength]} onChange={handleOnChange}/>
-            <Field label='Comentario' component={RenderField} name={"comentarios"} validate={required} onChange={handleOnChange}/>
+            <Field label='Telefono' component={RenderField} name={"telefono"} validate={[required, checkTel, telLength]} onChange={savePhone}/>
+            <Field label='Comentario' component={RenderField} name={"comentarios"} validate={required} onChange={saveComment}/>
 
        <View style={{flexDirection:'row', margin:10, alignItems:'center'}}>
        

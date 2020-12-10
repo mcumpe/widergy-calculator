@@ -1,3 +1,4 @@
+import { Alert } from "react-native"
 
 export const required = value => {
     value ? undefined : 'Required'
@@ -16,6 +17,14 @@ export const checkUser = value => {
 }
   
 export const telLength = value => value && value.length > 10 ? "El telefono debe tener 10 caracteres o menos" : undefined
+
+export const checkFields = (value1, value2 , value3 ) => {
+  if( value1 === '' || value2 === '' || value3 === ''){
+        return false
+    }else{
+         return true
+  }
+}
   
 
   

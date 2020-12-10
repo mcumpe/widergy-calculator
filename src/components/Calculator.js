@@ -41,7 +41,7 @@ const butonsFunc = ['SAVE', 'FORM']
 
            useEffect(() => {
           
-          /*     getAPI()   */
+             /*  getAPI()   */ 
 
        },[]);
 
@@ -64,25 +64,26 @@ const getAPI = async store => {
 }
 
 
-const postAPI = (id, operation) => {
-  Alert.alert(
-    '¡El metodo POST se ejecuto correctamente!',
-    '¡La operacion se registro con EXITO!',
-    [
-       {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel'
-      },
-      { text: 'OK', onPress: () => console.log('OK Pressed') }
-    ],
-    { cancelable: false }
-  );
+const postAPI = async (id, operation) => {
 
-  return async (dispatch, getState) => {
     const response = await axios.post(`https://private-4de685-martincumpe.apiary-mock.com/operation`,{id:id, operation:operation})
     const info = response.data
-   
+    if(info != null){
+  
+    Alert.alert(
+      '¡El metodo POST se ejecuto correctamente!',
+      '¡La operacion se registro con EXITO!',
+      [
+         {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel'
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') }
+      ],
+      { cancelable: false }
+    
+    );    
   }
 }
 
@@ -202,7 +203,7 @@ const validation = (string) => {
           
           setCont(cont+1)
           dispatch(saveExpression(cont,expression.expression))
-          postAPI()
+          postAPI(cont,expression.expression)
         break;
 
         case "FORM":
