@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector,useDispatch} from 'react-redux';
 import Card from '../components/Card'
 import { deleteExpression } from '../Redux/Actions/operationActions'
@@ -13,20 +13,28 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  Alert
+  Alert,
+
 } from 'react-native';
 
 
 const History = ({navigation},props) => {
+  
+  const [list, setList] = useState({
+    listado:[]
+  })
+   
 
-  const listExpression = useSelector(store => store.opRed.expression)
-  const dispatch =  useDispatch()
-    console.log(listExpression)
+    const listExpression= useSelector(store => store.opRed.expression) 
+    const dispatch =  useDispatch()
+
   const deleteAll = () => {
     dispatch(deleteExpression())
     Alert.alert("Has limpiado el historial")
   }
- 
+
+
+
   return (
     <>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#19191b' }}>
@@ -37,8 +45,8 @@ const History = ({navigation},props) => {
     <TouchableOpacity style={styles.cardButtons} onPress={() => deleteAll()}>
                 <Text style={styles.delete}>DELETE ALL</Text>
     </TouchableOpacity>
-
-          
+         
+        
           {listExpression.map((results, index)=> {
             return <Card key={index} valor={listExpression[index].operation}
                          id={listExpression[index].id}/>
@@ -49,6 +57,7 @@ const History = ({navigation},props) => {
     </>
     )
   }
+
 
   const styles = StyleSheet.create({
   delete:{

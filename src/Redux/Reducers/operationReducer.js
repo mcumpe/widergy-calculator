@@ -56,7 +56,8 @@ const operationReducer = (state = initalState, action) => {
             
             case 'SAVE_USERNAME':
               return {
-                  userName: action.payload.user,
+                ...state,  
+                userName: action.payload.user,
                 };
           
               default:

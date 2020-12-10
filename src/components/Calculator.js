@@ -2,7 +2,7 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import {useState, useEffect} from 'react'
 import { useDispatch,useSelector} from 'react-redux';
-import { saveExpression } from '../Redux/Actions/operationActions'
+import  {saveExpression}  from '../Redux/Actions/operationActions'
 import axios from 'axios'
 import { API } from '../config/API'   
 
@@ -41,9 +41,9 @@ const butonsFunc = ['SAVE', 'FORM']
 
            useEffect(() => {
           
-                 /*   getAPI()  */
+          /*     getAPI()   */
 
-                 },[]);
+       },[]);
 
 
 

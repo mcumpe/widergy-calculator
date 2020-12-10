@@ -1,78 +1,20 @@
-import { NONE } from 'apisauce';
-import React, { useState, useEffect } from 'react'
-import { SafeAreaView, StyleSheet, ScrollView, View, Text, Button, FlatList, TouchableOpacity, TextInput,Alert } from 'react-native';
-import {Field, reduxForm, reset, destroy ,change} from 'redux-form'
-import { connect, useDispatch, useSelector } from 'react-redux';
+
+import React, { useState } from 'react'
+import { SafeAreaView, StyleSheet, ScrollView, View, Text,TouchableOpacity ,Alert } from 'react-native';
+import {Field, reduxForm, destroy } from 'redux-form'
+import { connect, useDispatch } from 'react-redux';
 import {saveUser}  from '../Redux/Actions/operationActions'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
-import AwesomeAlert from 'react-native-awesome-alerts';
- 
-
-//Funciones de Validaciones
-
-const required = value => {
-  value ? undefined : 'Required'
-}
-
-const checkTel = value => {
-      if(value && isNaN(Number(value))){
-           return "¡El telefono debe ser solo numeros!"
-      }
-   }
-
-   const checkUser = value => {
-    if (value && /[^a-zA-Z ]/i.test(value)){
-      return '¡Solo se permiten letras!';
-    }
-  }
-
-const telLength = value => value && value.length > 10 ? "El telefono debe tener 10 caracteres o menos" : undefined
-
-//Funciones de Validaciones
+import RenderField from '../components/RenderField'
+import {required, checkTel, checkUser, telLength } from '../components/Validations'
 
 
 
-
-
-
-const renderField = ({label,meta:{ touched, error, warning },input,  input: { onChange, ...restInput }}) => {
-const [flag, setFlag] = useState(false)
-/* --------------------> BORRAR         const store = useSelector(store => store.opRed.userName)             <--------------------  BORRAR*/
-  
-
-return (
-    <>
-      <View style={{flexDirection:'row',height:50, alignItems:'center'}}>
-        <View>
-        <Text style={{fontSize:14, fontWeight:'bold', width:80,color:'white'}}>{label}:</Text>
-        </View>
-        
-        <View>
-        <TextInput style={label === 'Comentario' ? styles.textArea : styles.input } 
-        multiline={label === 'Comentario' ? true : false}  
-        numberOfLines={10} 
-        onChangeText={onChange} {...restInput} 
-        value={input.value}
-        
-        />
-         {touched && ((error && <Text style={{color: 'red',fontSize:10}}>{error}</Text>) ||
-          (warning && <Text style={{color: 'orange'}}>{warning}</Text>))}
-        </View>
-      </View>
-    </>
-  )
-}
-
-
-
-
-
-/* ¡------------------------------------------ Funcion Encuestra -------------------------------------------------! */
 let Survey  = (props) => {
   
   const [userName ,setUserName] = useState('')
-  const [message, setMessage] = useState('')
+
 
   const {handleSubmit} = props 
   const navigation = useNavigation();
@@ -98,7 +40,7 @@ let Survey  = (props) => {
     navigation.navigate({name:'Home'})     
   }
 
-
+       
 
     return (
     <>
@@ -107,9 +49,9 @@ let Survey  = (props) => {
           <View style={{flex: 1, flexDirection:'column',margin:40,justifyContent:'flex-start'}}>
             <Text style={styles.titleForm}>Formulario</Text>
             
-            <Field label='Usuario' component={renderField} name={"userName"} validate={[required, checkUser]} onChange={handleOnChange}/>
-            <Field label='Telefono' component={renderField} name={"telefono"} validate={[required, checkTel, telLength]}/>
-            <Field label='Comentario' component={renderField} name={"comentarios"} validate={required} />
+            <Field label='Usuario' component={RenderField} name={"userName"} validate={[required, checkUser]} onChange={handleOnChange}/>
+            <Field label='Telefono' component={RenderField} name={"telefono"} validate={[required, checkTel, telLength]} onChange={handleOnChange}/>
+            <Field label='Comentario' component={RenderField} name={"comentarios"} validate={required} onChange={handleOnChange}/>
 
        <View style={{flexDirection:'row', margin:10, alignItems:'center'}}>
        
