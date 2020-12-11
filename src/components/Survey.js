@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react'
 import { SafeAreaView, StyleSheet, ScrollView, View, Text,TouchableOpacity ,Alert } from 'react-native';
-import {Field, reduxForm, destroy } from 'redux-form'
+import {Field, reduxForm, destroy } from  'redux-form'
 import { connect, useDispatch } from 'react-redux';
-import {saveUser}  from '../Redux/Actions/operationActions'
+import {saveUser}  from '../Redux/User/Actions/userActions'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 import RenderField from '../components/RenderField'
@@ -99,8 +99,8 @@ let Survey  = (props) => {
 
    Survey = connect(
     state => ({
-      initialValues: state.opRed,
-      storeUserName: state.opRed.userName,
+      initialValues: state.user,
+      storeUserName: state.user.userName,
   }))(Survey); 
  
 

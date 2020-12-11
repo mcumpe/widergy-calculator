@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector,useDispatch} from 'react-redux';
 import Card from '../components/Card'
-import { deleteExpression } from '../Redux/Actions/operationActions'
+import { deleteExpression } from '../Redux/Operations/Actions/operationActions'
 import {
   SafeAreaView,
   StyleSheet,
@@ -25,7 +25,7 @@ const History = ({navigation},props) => {
   })
    
 
-    const listExpression= useSelector(store => store.opRed.expression) 
+    const listExpression= useSelector(store => store.operation.expression) 
     const dispatch =  useDispatch()
 
   const deleteAll = () => {

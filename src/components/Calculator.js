@@ -2,7 +2,7 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import {useState, useEffect} from 'react'
 import { useDispatch,useSelector} from 'react-redux';
-import  {saveExpression}  from '../Redux/Actions/operationActions'
+import  {saveExpression}  from '../Redux/Operations/Actions/operationActions'
 import axios from 'axios'
 import { API } from '../config/API'   
 
@@ -31,7 +31,7 @@ const [cont , setCont] = useState(1)
 
 
 const dispatch =  useDispatch()
-const store = useSelector(store => store.opRed.expression)
+const store = useSelector(store => store.operation.expression)
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9,'=','0','.']
 const signs  =  ['DEL','C','+','-','*','/',]

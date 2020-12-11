@@ -1,15 +1,7 @@
-import {
-    SAVE_OPERATION,
-    DELETE_EXPRESSION,
-    DELETE_ALL_EXPRESSIONS,
-    EDIT_EXPRESSION,
-    REMEMBER_USER_NAME,
-  } from '../Actions/actionsType';
 
 
 const initalState = {
     expression:[],
-    userName:''
 }
 
 const operationReducer = (state = initalState, action) => {
@@ -54,17 +46,11 @@ const operationReducer = (state = initalState, action) => {
                 expression: []
             };
             
-            case 'SAVE_USERNAME':
-              return {
-                ...state,  
-                userName: action.payload.user,
-                };
-          
-              default:
-                return state;
-            }
-          }; 
- 
+           
+            default:
+              return state;
+          }
+        }; 
   
 
 export default operationReducer

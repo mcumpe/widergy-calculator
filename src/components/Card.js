@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react'
 import { useDispatch, useSelector} from 'react-redux';
-import { editExpression,deleteIdExpression } from '../Redux/Actions/operationActions'
+import { editExpression,deleteIdExpression } from '../Redux/Operations/Actions/operationActions'
 import axios from 'axios'
 import {
   SafeAreaView,
@@ -23,7 +23,7 @@ const Card = (props) => {
    const [able, setAble] = useState(false)
    const [staticValue, setStaticValue] = useState('')
    
-   const store = useSelector(store => store.opRed.expression)
+   const store = useSelector(store => store.operation.expression)
    const dispatch =  useDispatch()
   
 

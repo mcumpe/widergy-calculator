@@ -7,14 +7,11 @@ export const saveExpression = (id, operation) => {
             payload:{
               id:id,
               operation:operation
-            }
-        }); 
-      
+       }
+    }); 
   }
 }
-
- 
-    
+   
     export const editExpression = (id, operation) => {  
       return async (dispatch, getState) => {
        
@@ -58,12 +55,7 @@ export const saveExpression = (id, operation) => {
 
 
 
-export const saveUser = userName => ({
-  type: 'SAVE_USERNAME',
-  payload: {
-    user: userName,
-  },
-});
+
   
  
     
