@@ -79,16 +79,16 @@ export const saveExpression = (id, operation) => {
           ],
           { cancelable: false }
       );
-    }
+    
       dispatch({  
     type: 'DELETE_ID_EXPRESSION',
     payload:{
       id:id
       }
-    }); 
+      }); 
+    }
   }
 }
-
 
 
     export const deleteExpression = (operation) => {
