@@ -4,10 +4,10 @@ import { SafeAreaView, StyleSheet, ScrollView, View, Text,TouchableOpacity ,Aler
 import {Field, reduxForm, destroy } from  'redux-form'
 import { connect, useDispatch } from 'react-redux';
 import {saveUser}  from '../Redux/User/Actions/userActions'
+import { sendForm } from '../Redux/Form/Actions/formActions'
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios'
-import RenderField from '../components/RenderField'
-import {required, checkTel, checkUser, telLength ,checkFields} from '../components/Validations'
+import TextInputField from '../components/TextInputField'
+import {required, checkTel, checkUser, telLength ,checkFields} from '../utils/Validations'
 
 
 
@@ -29,14 +29,10 @@ let Survey  = (props) => {
     if(!checkFields(userName,cell,comment)){
       Alert.alert("Tiene que llenar todos los campos")
     
-    
     }else{
 
     const keyResponse = { input_values: { values } };
-    const response = await axios.post('https://private-e75208-formresponse.apiary-mock.com/form_response', keyResponse);
-    if(response != null){
-      Alert.alert("¡Gracias por el mensaje!")
-    }
+    sendForm(keyResponse)
   }
 }
 
@@ -59,7 +55,7 @@ let Survey  = (props) => {
     navigation.navigate({name:'Home'})     
   }
 
- /*  console.log(userName, cell, comment) */
+
 
        
 
@@ -70,9 +66,9 @@ let Survey  = (props) => {
           <View style={{flex: 1, flexDirection:'column',margin:40,justifyContent:'flex-start'}}>
             <Text style={styles.titleForm}>Formulario</Text>
             
-            <Field label='Usuario' component={RenderField} name={"userName"} validate={[required, checkUser]} onChange={handleOnChange}/>
-            <Field label='Telefono' component={RenderField} name={"telefono"} validate={[required, checkTel, telLength]} onChange={savePhone}/>
-            <Field label='Comentario' component={RenderField} name={"comentarios"} validate={required} onChange={saveComment}/>
+            <Field label='Usuario' component={TextInputField} name={"userName"} validate={[required, checkUser]} onChange={handleOnChange}/>
+            <Field label='Telefono' component={TextInputField} name={"telefono"} validate={[required, checkTel, telLength]} onChange={savePhone}/>
+            <Field label='Comentario' component={TextInputField} name={"comentarios"} validate={required} onChange={saveComment}/>
 
        <View style={{flexDirection:'row', margin:10, alignItems:'center'}}>
        
@@ -94,7 +90,7 @@ let Survey  = (props) => {
   
   Survey = reduxForm({
     form: 'survey',
-    enableReinitialize: true,
+   
   })(Survey) 
 
    Survey = connect(

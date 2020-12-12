@@ -28,28 +28,7 @@ const Card = (props) => {
   
 
 
-   const deleteAPI = async (id) => {
-   
-      const response = await axios.delete(`https://private-58b18-calculatorapi5.apiary-mock.com/questions`,{id:id})
-      const info = response.data
-      if(info != null){
-        Alert.alert(
-          '¡El metodo DELETE se ejecuto correctamente!',
-          '¡La operacion se registro con EXITO!',
-          [
-             {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel'
-            },
-            { text: 'OK', onPress: () => console.log('OK Pressed') }
-          ],
-          { cancelable: false }
-      );
-    }
-  }
-
-
+ 
 
 
    const viewInfo = (valor) => {    
@@ -72,7 +51,7 @@ const Card = (props) => {
           
             case "X":
                dispatch(deleteIdExpression(props.id))
-               deleteAPI(props.id)
+              
             break;
 
             case "Edit":

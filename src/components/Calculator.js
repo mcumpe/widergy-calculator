@@ -41,14 +41,13 @@ const butonsFunc = ['SAVE', 'FORM']
 
            useEffect(() => {
           
-             /*  getAPI()   */ 
+               getAPI()   
 
        },[]);
 
 
 
 
-//Con getSearch hago el pedido a la API para buscar las expresiones
 const getAPI = async store => {
 
   fetch('https://private-4de685-martincumpe.apiary-mock.com/operation')
@@ -64,28 +63,7 @@ const getAPI = async store => {
 }
 
 
-const postAPI = async (id, operation) => {
 
-    const response = await axios.post(`https://private-4de685-martincumpe.apiary-mock.com/operation`,{id:id, operation:operation})
-    const info = response.data
-    if(info != null){
-  
-    Alert.alert(
-      '¡El metodo POST se ejecuto correctamente!',
-      '¡La operacion se registro con EXITO!',
-      [
-         {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel'
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') }
-      ],
-      { cancelable: false }
-    
-    );    
-  }
-}
 
 
 
@@ -93,7 +71,7 @@ const postAPI = async (id, operation) => {
 
 
 
-/* ------------------ Creacion de menu de signos ------------------*/
+
 let operation = []
   for(let i=0;i<signs.length;i++){
    operation.push(
@@ -102,14 +80,14 @@ let operation = []
      </TouchableOpacity>
     )
   }
-/* ------------------ Creacion de menu de signos ------------------*/
 
 
 
 
-/* --------------------  Funciones  --------------------*/
+
+
   
-/* Con esta funcion controlo lo valores de input ingresador por teclado */
+
   
   const inputVerification = (value) => {  
     let check
@@ -118,7 +96,7 @@ let operation = []
   }
 
 
-/* Con esta funcion lo que hago es Realizar los calculos cuando aparece el signo = */
+
   const viewButton = (e) => {
     let resultExpression 
    
@@ -138,7 +116,7 @@ let operation = []
 
 
 
-/* Esta es mi funcion validacion para eliminar el signo = y evitar problemas en los calculos*/
+
 const validation = (string) => {
   let stringToCheck = string.split("")
   
@@ -154,7 +132,7 @@ const validation = (string) => {
 
 
   
-/* En esta funcion ingreso los signos de calculos */
+
   const operatorState = (e) => {
 
     switch (e) {
@@ -203,7 +181,7 @@ const validation = (string) => {
           
           setCont(cont+1)
           dispatch(saveExpression(cont,expression.expression))
-          postAPI(cont,expression.expression)
+
         break;
 
         case "FORM":
@@ -215,7 +193,7 @@ const validation = (string) => {
       }
     } 
 
-/* --------------------  Funciones  --------------------*/
+
  
 
 
@@ -228,13 +206,13 @@ const validation = (string) => {
      
         <View style={styles.container}>
           
-        {/* ------------------   En este VIEW se va a mostrar los resultados ----------------*/}  
+       
           <View style={styles.result}>
               <Text style={styles.numEx}>{result}</Text>
           </View>
         
         
-        {/* ------------------   En este VIEW se va a calcular las expresiones ----------------*/}
+        
         <View style={styles.calculation}>
             <TextInput onChangeText={text => inputVerification(text)} style={styles.numEx}>{validation(expression.expression)}</TextInput>
         </View>
@@ -246,7 +224,7 @@ const validation = (string) => {
         <View style={styles.buttons}>
             <View style={styles.numbers}>
               
-              {/* Boton funcionalidades del SAVE y FORM */}
+           
               
                 <View style={styles.menuFunc}>
                   {butonsFunc.map(buton => {
@@ -311,7 +289,7 @@ const styles = StyleSheet.create({
       flexDirection:'row'
     },
     
-    //Estilos del view de botones 
+
     numbers:{
       flex:4,
       backgroundColor:'#EAECEE',

@@ -3,7 +3,7 @@ import React from 'react'
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 
-const RenderField = ({label,meta:{ touched, error, warning },input,  input: { onChange, ...restInput }}) => {
+const TextInputField = ({label,meta:{ touched, error, warning },input,  input: { onChange, ...restInput }}) => {
 
     return (
         <>
@@ -54,4 +54,4 @@ const RenderField = ({label,meta:{ touched, error, warning },input,  input: { on
           },
         })
 
-    export default RenderField
+    export default TextInputField
