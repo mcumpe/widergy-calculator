@@ -28,7 +28,7 @@ let Survey  = (props) => {
     
     if(!checkFields(userName,cell,comment)){
       Alert.alert("Tiene que llenar todos los campos")
-      return 0
+    
     
     }else{
 

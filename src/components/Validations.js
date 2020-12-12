@@ -1,11 +1,9 @@
 import { Alert } from "react-native"
 
-export const required = value => {
-    value ? undefined : 'Required'
-  }
+export const required = value => { value ? undefined : 'Required' }
   
 export const checkTel = value => {
-    if(value && isNaN(Number(value))){
+if(value && isNaN(Number(value))){
         return "¡El telefono debe ser solo numeros!"
     }
  }
