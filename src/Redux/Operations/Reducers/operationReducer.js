@@ -1,14 +1,7 @@
-import {
-    SAVE_OPERATION,
-    DELETE_EXPRESSION,
-    DELETE_ALL_EXPRESSIONS,
-    EDIT_EXPRESSION,
-    REMEMBER_USER_NAME,
-  } from '../Actions/actionsType';
 
 
 const initalState = {
-    expression:[]
+    expression:[],
 }
 
 const operationReducer = (state = initalState, action) => {
@@ -51,10 +44,13 @@ const operationReducer = (state = initalState, action) => {
                return {
                 ...state, 
                 expression: []
-    };
-        default:
-            return state
-    }
-}
+            };
+            
+           
+            default:
+              return state;
+          }
+        }; 
+  
 
-export default operationReducer 
+export default operationReducer

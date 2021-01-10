@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react'
 import { useDispatch, useSelector} from 'react-redux';
-import { editExpression,deleteIdExpression } from '../Redux/Actions/operationActions'
+import { editExpression,deleteIdExpression } from '../Redux/Operations/Actions/operationActions'
 import axios from 'axios'
 import {
   SafeAreaView,
@@ -23,33 +23,12 @@ const Card = (props) => {
    const [able, setAble] = useState(false)
    const [staticValue, setStaticValue] = useState('')
    
-   const store = useSelector(store => store.opRed.expression)
+   const store = useSelector(store => store.operation.expression)
    const dispatch =  useDispatch()
   
 
 
-   const deleteAPI = (id, operation) => {
-    Alert.alert(
-      '¡El metodo DELETE se ejecuto correctamente!',
-      '¡La operacion se registro con EXITO!',
-      [
-         {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel'
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') }
-      ],
-      { cancelable: false }
-    );
-  
-    return async (dispatch, getState) => {
-      const response = await axios.delete(`https://private-4de685-martincumpe.apiary-mock.com/operation`,{id:id, operation:operation})
-      const info = response.data
-    }
-  }
-
-
+ 
 
 
    const viewInfo = (valor) => {    
@@ -72,7 +51,7 @@ const Card = (props) => {
           
             case "X":
                dispatch(deleteIdExpression(props.id))
-               deleteAPI(props.id)
+              
             break;
 
             case "Edit":

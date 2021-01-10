@@ -1,65 +1,106 @@
-import { NONE } from 'apisauce';
+
 import React, { useState } from 'react'
-import { SafeAreaView, StyleSheet, ScrollView, View, Text, Button, FlatList, TouchableOpacity, TextInput,Alert } from 'react-native';
-import {Field, reduxForm } from 'redux-form'
+import { SafeAreaView, StyleSheet, ScrollView, View, Text,TouchableOpacity ,Alert } from 'react-native';
+import {Field, reduxForm, destroy } from  'redux-form'
+import { connect, useDispatch } from 'react-redux';
+import {saveUser}  from '../Redux/User/Actions/userActions'
+import { sendForm } from '../Redux/Form/Actions/formActions'
+import { useNavigation } from '@react-navigation/native';
+import TextInputField from '../components/TextInputField'
+import {required, checkTel, checkUser, telLength ,checkFields} from '../utils/Validations'
 
 
-const renderField = ({label}) => {
-const [flag, setFlag] = useState(false)
 
-  return (
-    <>
-      <View style={{flexDirection:'row',height:50, alignItems:'center'}}>
-        <View>
-        <Text style={{fontSize:14, fontWeight:'bold', width:80}}>{label}:</Text>
-        </View>
-        
-        <View>
-        <TextInput style={label === 'Comentario' ? styles.textArea : styles.input } multiline={label === 'Comentario' ? true : false}  numberOfLines={10}/>
-        </View>
-      </View>
-    </>
-  )
+let Survey  = (props) => {
+  
+  const [userName ,setUserName] = useState('')
+  const [cell ,setCell] = useState('')
+  const [comment ,setComment] = useState('')
+
+
+  const {handleSubmit} = props 
+  const navigation = useNavigation();
+  const dispatch = useDispatch() 
+ 
+  
+
+  const submit = async (values) => {
+    
+    if(!checkFields(userName,cell,comment)){
+      Alert.alert("Tiene que llenar todos los campos")
+    
+    }else{
+
+    const keyResponse = { input_values: { values } };
+    sendForm(keyResponse)
+  }
 }
 
+  const handleOnChange = (user) => {
+    setUserName(user)
+  }
 
-let Survey = props => {
-/* 
-const {handleSubmit} = props */
+  const savePhone = (user) => {
+    setCell(user)
+  }
+  
+  const saveComment = (user) => {
+    setComment(user)
+  }
 
-const handleSubmit = (valueP) => {
-  Alert.alert("Mis valores props handleSubmit son ",valueP)
-}
+  
+  const destroyForm = () => {
+    dispatch(saveUser(userName))         
+    destroy('survey')
+    navigation.navigate({name:'Home'})     
+  }
+
+
+
+       
 
     return (
     <>
+       <SafeAreaView style={{ flex: 1, backgroundColor: '#19191b' }}>
+        <ScrollView>
           <View style={{flex: 1, flexDirection:'column',margin:40,justifyContent:'flex-start'}}>
             <Text style={styles.titleForm}>Formulario</Text>
             
-            <Field label='Nombre' component={renderField} name={"nombre"} />
-            <Field label='Telefono' component={renderField} name={"telefono"} />
-            <Field label='Comentario' component={renderField} name={"comentarios"} />
+            <Field label='Usuario' component={TextInputField} name={"userName"} validate={[required, checkUser]} onChange={handleOnChange}/>
+            <Field label='Telefono' component={TextInputField} name={"telefono"} validate={[required, checkTel, telLength]} onChange={savePhone}/>
+            <Field label='Comentario' component={TextInputField} name={"comentarios"} validate={required} onChange={saveComment}/>
 
        <View style={{flexDirection:'row', margin:10, alignItems:'center'}}>
        
-          <TouchableOpacity style={styles.cardButton}>
+          <TouchableOpacity style={styles.cardButton} onPress={handleSubmit(submit)}>
             <Text style={styles.buttonSubmit}>Submit</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => console.log("Clikeaste Cancel")} style={styles.cardButton}>
+          <TouchableOpacity onPress={destroyForm} style={styles.cardButton}>
             <Text style={styles.buttonCancel}>Cancel</Text>
           </TouchableOpacity>
        
           </View>
       </View>
+      </ScrollView>
+      </SafeAreaView>
     </>
     )
   }
   
   Survey = reduxForm({
-    form: 'survey'
+    form: 'survey',
+   
   })(Survey) 
 
+   Survey = connect(
+    state => ({
+      initialValues: state.user,
+      storeUserName: state.user.userName,
+  }))(Survey); 
+ 
+
+  
   const styles = StyleSheet.create({
   textArea:{
     
@@ -69,19 +110,21 @@ const handleSubmit = (valueP) => {
     width:220,
     textAlignVertical: 'top',
     borderColor:'steelblue',
-    borderWidth:2,
+    borderWidth:1,
     marginTop:40,
-    borderRadius:10 
+    borderRadius:10,
+    backgroundColor:'#B5D3D2' 
   },
   
   input:{
     borderColor:'steelblue',
-    borderWidth:2, 
+    borderWidth:1, 
     height:37, 
     width:220, 
     padding:5,
     paddingTop:10,
-    borderRadius:10 
+    borderRadius:10,
+    backgroundColor:'#89DCF5' 
     },
 
     buttonCancel:{
@@ -113,7 +156,8 @@ const handleSubmit = (valueP) => {
       width:200, 
       textAlign:'center',
       margin:40, 
-      fontFamily:'Orbitron-Regular'
+      fontFamily:'Orbitron-Regular',
+      color:'white'
     },
     cardButton:{
       flexDirection:'row',
